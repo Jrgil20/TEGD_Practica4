@@ -26,19 +26,48 @@ Este proyecto implementa una base de datos distribuida con PostgreSQL, utilizand
 
 - PostgreSQL 15 o superior
 - pgAdmin 4
-- Docker (opcional)
+- Docker y Docker Compose (para instalación con contenedores)
+
+## Opciones de Instalación
+
+### Opción 1: Docker (Recomendado)
+Si no tienes dos computadoras disponibles, puedes usar Docker para simular ambos nodos en una sola máquina. Ver [DOCKER_README.md](DOCKER_README.md) para instrucciones detalladas.
+
+### Opción 2: Instalación Manual
+Para instalación en máquinas separadas o en una sola máquina con diferentes puertos, ver la documentación en la carpeta `docs/`.
 
 ## Estructura del Proyecto
 
 ```bash
-    ├── docs/                    # Documentación detallada
-    ├── scripts/                 # Scripts SQL y de configuración
-    │   ├── caracas/            # Scripts para nodo Caracas
-    │   └── valencia/           # Scripts para nodo Valencia
-    └── README.md               # Este archivo
+├── docs/                    # Documentación detallada
+├── scripts/                 # Scripts SQL y de configuración
+│   ├── caracas/            # Scripts para nodo Caracas
+│   └── valencia/           # Scripts para nodo Valencia
+├── docker-compose.yml      # Configuración de Docker
+├── DOCKER_README.md        # Guía de instalación con Docker
+└── README.md               # Este archivo
 ```
 
-## Configuración
+## Inicio Rápido con Docker
+
+```bash
+# Clonar el repositorio
+git clone [URL_DEL_REPOSITORIO]
+cd TEGD_Practica4
+
+# Iniciar los servicios
+docker-compose up -d
+
+# Verificar que todo esté funcionando
+docker-compose ps
+
+# Acceder a pgAdmin
+# Abrir navegador: http://localhost:5050
+# Usuario: admin@admin.com
+# Contraseña: admin
+```
+
+## Configuración Manual
 
 1. Instalar PostgreSQL en ambos nodos
 2. Configurar las conexiones según los scripts en `scripts/`

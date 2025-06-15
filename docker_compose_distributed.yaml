@@ -1,0 +1,73 @@
+version: '3.8'
+
+services:
+  # Nodo Caracas
+  postgres-caracas:
+    image: postgres:15
+    container_name: db-caracas
+    environment:
+      POSTGRES_DB: clientes_caracas
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres123
+    ports:
+      - "5432:5432"
+    networks:
+      bd_distribuida:
+        ipv4_address: 172.20.0.10
+    volumes:
+      - ./scripts/caracas:/docker-entrypoint-initdb.d
+      - caracas_data:/var/lib/postgresql/data
+      - ./config/postgresql-caracas.conf:/etc/postgresql/postgresql.conf
+    command: postgres -c config_file=/etc/postgresql/postgresql.conf
+    restart: unless-stopped
+
+  # Nodo Valencia
+  postgres-valencia:
+    image: postgres:15
+    container_name: db-valencia
+    environment:
+      POSTGRES_DB: clientes_valencia
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres123
+    ports:
+      - "5433:5432"
+    networks:
+      bd_distribuida:
+        ipv4_address: 172.20.0.11
+    volumes:
+      - ./scripts/valencia:/docker-entrypoint-initdb.d
+      - valencia_data:/var/lib/postgresql/data
+      - ./config/postgresql-valencia.conf:/etc/postgresql/postgresql.conf
+    command: postgres -c config_file=/etc/postgresql/postgresql.conf
+    restart: unless-stopped
+    depends_on:
+      - postgres-caracas
+
+  # Herramienta de administración
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin-distribuido
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@distribuido.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    ports:
+      - "8080:80"
+    networks:
+      - bd_distribuida
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    restart: unless-stopped
+
+networks:
+  bd_distribuida:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.20.0.0/16
+          gateway: 172.20.0.1
+
+volumes:
+  caracas_data:
+  valencia_data:
+  pgadmin_data:

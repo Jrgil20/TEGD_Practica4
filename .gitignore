@@ -1,0 +1,30 @@
+# Docker volumes
+caracas-data/
+valencia-data/
+pgadmin-data/
+
+# Docker files
+.docker/
+
+# PostgreSQL logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary files
+*.tmp
+*.temp
+*~
+
+# Backup files
+*.backup
+*.bak
+*.sql.bak 
